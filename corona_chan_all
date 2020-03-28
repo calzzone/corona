@@ -1,0 +1,16 @@
+#!/bin/sh
+
+curl https://corona-stats.online\?source\=2 > corona_all
+
+grep "│" corona_all | 
+	sed "s/\s*//g ; # spaces
+	
+	s/╔//g ; s/╤//g ; s/═//g ; s/╗//g ;  # top row
+	# s/╟//g ; s/┼//g ; s/─//g ; s/╢//g ; # row separators (not needed since grep)
+	s/╚//g ; s/╧//g ; s/═//g ; s/╝//g ; # bottom row
+	
+	s/║//g ; # data rows ends
+	s/│/;/g ; s/,//g ; s/;/,/g ; s/▲//g ; # propper csv
+	
+	s/\x1b\[[0-9;]*m//g" > corona_all.csv # color codes
+

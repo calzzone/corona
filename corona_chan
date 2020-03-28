@@ -1,0 +1,13 @@
+#!/bin/sh
+
+[ ! -f corona_ro ] &&
+	curl https://corona-stats.online/romania\?source\=2 > corona_ro
+
+[ `find corona_ro -type f -mmin +10` ] &&
+	curl https://corona-stats.online/romania\?source\=2 > corona_ro
+
+grep "Romania" corona_ro | 
+	sed "s/\s*//g ; s/║//g ; s/│/;/g ; s/\x1b\[[0-9;]*m//g" |
+	awk -F';' '{print "COVID: +" $4 "/" $3 " ☠: +" $6 "/" $5 }'| 
+        sed "s/ +\//0\//g"
+
