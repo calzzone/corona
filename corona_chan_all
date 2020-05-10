@@ -1,5 +1,7 @@
 #!/bin/sh
 
+d=`date +%m-%d-%Y`
+
 curl https://corona-stats.online\?source\=2 > corona_all
 
 grep "│" corona_all | 
@@ -12,5 +14,5 @@ grep "│" corona_all |
 	s/║//g ; # data rows ends
 	s/│/;/g ; s/,//g ; s/;/,/g ; s/▲//g ; # propper csv
 	
-	s/\x1b\[[0-9;]*m//g" > corona_all.csv # color codes
+	s/\x1b\[[0-9;]*m//g" > "corona_all$d.csv" # color codes
 
